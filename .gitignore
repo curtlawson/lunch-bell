@@ -1,0 +1,14 @@
+# Terraform
+infra/.terraform/
+infra/tfplan
+infra/tfplan.txt
+*.tfstate
+*.tfstate.backup
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Output
+output/

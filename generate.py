@@ -19,12 +19,12 @@ CALENDAR_NAMES = {
 }
 
 
-def _make_event(entry: dict, level: str) -> Event:
+def _make_event(entry: dict, level: str, domain: str = DOMAIN) -> Event:
     lunch_date: date = entry["date"]
     items: list[str] = entry["items"]
 
     event = Event()
-    event.add("uid", f"{lunch_date.strftime('%Y%m%d')}-{level}@{DOMAIN}")
+    event.add("uid", f"{lunch_date.strftime('%Y%m%d')}-{level}@{domain}")
 
     # All-day event: DTSTART is a date, DTEND is the next day
     event.add("dtstart", lunch_date)
@@ -33,13 +33,13 @@ def _make_event(entry: dict, level: str) -> Event:
     # Use a deterministic DTSTAMP so the .ics file is content-stable
     event.add("dtstamp", datetime(lunch_date.year, lunch_date.month, lunch_date.day, tzinfo=timezone.utc))
 
-    event.add("summary", ", ".join(items))
+    event.add("summary", items[0])
     event.add("description", "\n".join(f"• {item}" for item in items))
 
     return event
 
 
-def build_calendar(menu: list[dict], level: str) -> Calendar:
+def build_calendar(menu: list[dict], level: str, domain: str = DOMAIN) -> Calendar:
     """
     Build an icalendar.Calendar from a parsed menu list.
 
@@ -61,7 +61,7 @@ def build_calendar(menu: list[dict], level: str) -> Calendar:
     cal.add("x-wr-timezone", "America/Chicago")
 
     for entry in menu:
-        cal.add_component(_make_event(entry, level))
+        cal.add_component(_make_event(entry, level, domain=domain))
 
     return cal
 
