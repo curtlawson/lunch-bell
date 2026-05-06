@@ -51,6 +51,7 @@ data "aws_iam_policy_document" "github_actions_policy" {
       "ecr:CompleteLayerUpload",
       "ecr:PutImage",
       "ecr:ListImages",
+      "ecr:ListTagsForResource",
       "ecr:BatchDeleteImage",
       "ecr:DescribeRepositories",
       "ecr:GetLifecyclePolicy",
@@ -80,6 +81,7 @@ data "aws_iam_policy_document" "github_actions_policy" {
     actions = [
       "s3:CreateBucket",
       "s3:DeleteBucket",
+      "s3:GetBucketAcl",
       "s3:GetBucketPolicy",
       "s3:PutBucketPolicy",
       "s3:DeleteBucketPolicy",
@@ -116,6 +118,7 @@ data "aws_iam_policy_document" "github_actions_policy" {
       "cloudfront:GetOriginAccessControl",
       "cloudfront:GetOriginAccessControlConfig",
       "cloudfront:CreateInvalidation",
+      "cloudfront:ListCachePolicies",
       "cloudfront:ListTagsForResource",
       "cloudfront:TagResource",
       "cloudfront:UntagResource",
@@ -134,6 +137,12 @@ data "aws_iam_policy_document" "github_actions_policy" {
       "ssm:RemoveTagsFromResource",
     ]
     resources = ["arn:aws:ssm:${var.aws_region}:${var.aws_account_id}:parameter/${var.project}/*"]
+  }
+
+  # ssm:DescribeParameters cannot be scoped to a parameter path
+  statement {
+    actions   = ["ssm:DescribeParameters"]
+    resources = ["*"]
   }
 
   # IAM roles for lunch-bell resources
