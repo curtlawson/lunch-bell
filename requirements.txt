@@ -1,0 +1,4 @@
+requests==2.32.3
+beautifulsoup4==4.13.4
+pdfplumber==0.11.6
+icalendar==6.3.2
