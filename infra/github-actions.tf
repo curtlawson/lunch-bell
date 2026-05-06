@@ -204,7 +204,6 @@ data "aws_iam_policy_document" "github_actions_policy" {
       "logs:CreateLogGroup",
       "logs:DeleteLogGroup",
       "logs:PutRetentionPolicy",
-      "logs:DescribeLogGroups",
       "logs:ListTagsLogGroup",
       "logs:TagLogGroup",
       "logs:UntagLogGroup",
@@ -213,6 +212,12 @@ data "aws_iam_policy_document" "github_actions_policy" {
       "logs:UntagResource",
     ]
     resources = ["arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:/aws/lambda/${var.project}*"]
+  }
+
+  # logs:DescribeLogGroups cannot be scoped to a specific log group
+  statement {
+    actions   = ["logs:DescribeLogGroups"]
+    resources = ["*"]
   }
 
   # EventBridge Scheduler management
