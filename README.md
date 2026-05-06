@@ -112,6 +112,7 @@ docker buildx build --platform linux/amd64 --provenance=false \
 ### Deploy infrastructure
 
 ```bash
+export AWS_PROFILE=personal
 cd infra
 terraform init
 terraform plan -out=tfplan
@@ -121,6 +122,7 @@ terraform apply "tfplan"
 ### Tear down
 
 ```bash
+export AWS_PROFILE=personal
 ./scripts/empty-before-destroy.sh   # empties S3 bucket and ECR first
 cd infra && terraform destroy
 ```

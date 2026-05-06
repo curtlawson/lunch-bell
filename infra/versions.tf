@@ -14,11 +14,9 @@ terraform {
     region       = "us-east-1"
     use_lockfile = true
     encrypt      = true
-    profile      = "personal"
   }
 }
 
 provider "aws" {
-  region  = var.aws_region
-  profile = "personal"
+  region = var.aws_region
 }
